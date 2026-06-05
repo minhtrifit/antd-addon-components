@@ -24,5 +24,8 @@
   "description-required": "Mô tả là bắt buộc",
   "start-date": "Ngày bắt đầu",
   "end-date": "Ngày kết thúc",
-  "app-not-support-device": "Ứng dụng không được hỗ trợ trên thiết bị này"
+  "app-not-support-device": "Ứng dụng không được hỗ trợ trên thiết bị này",
+  "antd-json-editor": {
+    "preview": "Xem trước"
+  }
 }
