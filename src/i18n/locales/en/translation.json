@@ -26,6 +26,9 @@
   "end-date": "End date",
   "app-not-support-device": "Application is not supported on this device",
   "antd-json-editor": {
-    "preview": "Preview"
+    "preview": "Preview",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "confirm-delete-node": "Are you sure to delete this node?"
   }
 }

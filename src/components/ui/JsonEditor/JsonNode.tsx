@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { Button, Dropdown, Input, InputNumber, Switch } from 'antd';
+import { Button, Dropdown, Input, InputNumber, Popconfirm, Switch } from 'antd';
 import { FaPlus, FaChevronRight, FaChevronDown, FaTrash } from 'react-icons/fa';
 import { MdModeEditOutline } from 'react-icons/md';
 import { JsonValue } from './types';
@@ -30,6 +31,8 @@ const Branch = () => {
 
 export const JsonNode = (props: PropType) => {
   const { name, value, path, root, onChange, isRoot } = props;
+
+  const { t } = useTranslation();
 
   const [expanded, setExpanded] = useState<boolean>(true);
   const [editingKey, setEditingKey] = useState<boolean>(false);
@@ -95,6 +98,7 @@ export const JsonNode = (props: PropType) => {
 
       if (Array.isArray(target)) {
         target.push(defaultValueByType(type));
+        setExpanded(true); // Auto expanded child node
         return;
       }
 
@@ -105,6 +109,7 @@ export const JsonNode = (props: PropType) => {
       }
 
       target[`newKey${index}`] = defaultValueByType(type);
+      setExpanded(true); // Auto expanded child node
     });
   };
 
@@ -203,7 +208,17 @@ export const JsonNode = (props: PropType) => {
           </Dropdown>
         )}
 
-        {!isRoot && <Button danger icon={<FaTrash />} onClick={deleteNode} />}
+        {!isRoot && (
+          <Popconfirm
+            title={t('antd-json-editor.confirm')}
+            description={t('antd-json-editor.confirm-delete-node')}
+            onConfirm={deleteNode}
+            okText={t('antd-json-editor.confirm')}
+            cancelText={t('antd-json-editor.cancel')}
+          >
+            <Button danger icon={<FaTrash />} />
+          </Popconfirm>
+        )}
       </div>
 
       {isObject && expanded && (
