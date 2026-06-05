@@ -29,6 +29,13 @@
     "preview": "Preview",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "confirm-delete-node": "Are you sure to delete this node?"
+    "confirm-delete-node": "Are you sure to delete this node?",
+    "download": "Download",
+    "upload": "Upload",
+    "upload-successfully": "Upload successfully",
+    "invalid-json": "Invalid json",
+    "download-successfully": "Download successfully",
+    "clear-all": "Clear all",
+    "confirm-delete-all-node": "Are you sure to delete all node?"
   }
 }

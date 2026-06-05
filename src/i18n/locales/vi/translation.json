@@ -29,6 +29,13 @@
     "preview": "Xem trước",
     "confirm": "Xác nhận",
     "cancel": "Hủy",
-    "confirm-delete-node": "Bạn có chắc muốn xóa giá trị này?"
+    "confirm-delete-node": "Bạn có chắc muốn xóa giá trị này?",
+    "download": "Tải xuống",
+    "upload": "Tải lên",
+    "upload-successfully": "Tải thành công",
+    "invalid-json": "Json không hợp lệ",
+    "download-successfully": "Tải xuống thành công",
+    "clear-all": "Xóa toàn bộ",
+    "confirm-delete-all-node": "Bạn có chắc muốn xóa toàn bộ dữ liệu?"
   }
 }
