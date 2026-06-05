@@ -1,0 +1,36 @@
+.sidebar {
+  border: none !important;
+  background: #252422 !important;
+  margin-top: 64px;
+
+  :global(.ant-menu-sub) {
+    background: #252422 !important;
+  }
+
+  :global(.ant-menu-title-content) {
+    font-size: 0.85rem;
+  }
+
+  /* chỉnh submenu không bị thụt vào quá nhiều */
+  :global(.ant-menu-sub .ant-menu-item) {
+    padding-left: 36px !important;
+  }
+
+  /* màu khi hover */
+  :global(.ant-menu-item:hover) {
+    background: #334155 !important; /* màu nền khi hover */
+    color: #fff !important; /* màu chữ khi hover */
+  }
+
+  /* màu khi active + hover */
+  :global(.ant-menu-item-selected:hover) {
+    background: #003c9c !important;
+    color: #fff !important;
+  }
+
+  /* màu khi active (click chọn) */
+  :global(.ant-menu-item-selected) {
+    background: #003c9c !important;
+    color: #fff !important;
+  }
+}

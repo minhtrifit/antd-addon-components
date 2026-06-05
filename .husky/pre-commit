@@ -1,0 +1,4 @@
+echo "🐶 .husky pre commit is running..."
+
+echo "Start running lint-staged..."
+npx lint-staged

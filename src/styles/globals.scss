@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  // background: $primary-color;
+}
+
+.block__container {
+  width: 100%;
+  background: #fff;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 3px 3px rgba(56, 65, 74, 0.1);
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* độ dày scrollbar */
+  height: 6px; /* chiều cao nếu là scroll ngang */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* màu nền track */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* màu thanh cuộn */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* khi hover */
+}
