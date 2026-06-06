@@ -1,8 +1,8 @@
-# REACT BOILERPLATE DOCUMENTATION
+# ANTD ADDON COMPONENTS DOCUMENTATION
 
-<img src="https://img.shields.io/github/stars/minhtrifit/react-boilerplate"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/minhtrifit/react-boilerplate)
+<img src="https://img.shields.io/github/stars/minhtrifit/antd-addon-components"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/minhtrifit/antd-addon-components)
 
-<!-- ![Thumbnail](./showcase/thumbnail.png) -->
+## [⌨️ Base on React Boilerplate (by minhtrifit)](https://github.com/minhtrifit/react-boilerplate)
 
 # 📋 Table of Contents
 
@@ -69,9 +69,9 @@ docker-compose up -d --build
 
 ## 📄 Related Document <a name="api-document"></a>
 
-* [FakeStore API](https://fakestoreapi.com/docs)
+- [FakeStore API](https://fakestoreapi.com/docs)
 
-* [Icon repo](https://www.svgrepo.com)
+- [Icon repo](https://www.svgrepo.com)
 
 ## 💌 Contact
 
