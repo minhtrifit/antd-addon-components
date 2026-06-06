@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { Button, Dropdown, Input, InputNumber, Popconfirm, Switch } from 'antd';
 import { FaPlus, FaChevronRight, FaChevronDown, FaTrash } from 'react-icons/fa';
-import { MdModeEditOutline } from 'react-icons/md';
-import { JsonValue } from './types';
+import { MdModeEditOutline, MdSwapHoriz } from 'react-icons/md';
+import { JsonValue, NodeType } from './types';
 import { clone, defaultValueByType, getByPath } from './utils';
 import { TYPE_MENU_ITEMS } from './constants';
 
@@ -63,6 +63,18 @@ export const JsonNode = (props: PropType) => {
     });
   };
 
+  const changeNodeType = (type: NodeType) => {
+    updateRoot((draft) => {
+      const parent = getByPath(draft, path);
+
+      if (Array.isArray(parent)) {
+        parent[Number(name)] = defaultValueByType(type);
+      } else {
+        parent[name] = defaultValueByType(type);
+      }
+    });
+  };
+
   const deleteNode = () => {
     updateRoot((draft) => {
       const parent = getByPath(draft, path);
@@ -88,7 +100,7 @@ export const JsonNode = (props: PropType) => {
     });
   };
 
-  const addProperty = (type: string) => {
+  const addProperty = (type: NodeType) => {
     updateRoot((draft) => {
       const target = isRoot ? draft : getByPath(draft, currentPath);
 
@@ -113,7 +125,7 @@ export const JsonNode = (props: PropType) => {
     });
   };
 
-  const renderValueEditor = () => {
+  const renderValueEditor = (value: JsonValue) => {
     if (value !== null && typeof value === 'object') {
       return null;
     }
@@ -193,14 +205,26 @@ export const JsonNode = (props: PropType) => {
             {isArray ? `[${value.length}]` : '{}'}
           </span>
         ) : (
-          renderValueEditor()
+          renderValueEditor(value)
+        )}
+
+        {!isRoot && (
+          <Dropdown
+            menu={{
+              items: TYPE_MENU_ITEMS,
+              onClick: ({ key }) => changeNodeType(key as NodeType),
+            }}
+            trigger={['click']}
+          >
+            <Button icon={<MdSwapHoriz size={20} />} />
+          </Dropdown>
         )}
 
         {isObject && (
           <Dropdown
             menu={{
               items: TYPE_MENU_ITEMS,
-              onClick: ({ key }) => addProperty(key),
+              onClick: ({ key }) => addProperty(key as NodeType),
             }}
             trigger={['click']}
           >

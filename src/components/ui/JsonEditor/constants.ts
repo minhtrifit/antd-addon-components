@@ -1,8 +1,10 @@
+import { NodeType } from './types';
+
 export const TYPE_MENU_ITEMS = [
-  { key: 'string', label: 'String' },
-  { key: 'number', label: 'Number' },
-  { key: 'boolean', label: 'Boolean' },
-  { key: 'object', label: 'Object' },
-  { key: 'array', label: 'Array' },
-  { key: 'null', label: 'Null' },
+  { key: NodeType.STRING, label: 'String' },
+  { key: NodeType.NUMBER, label: 'Number' },
+  { key: NodeType.BOOLEAN, label: 'Boolean' },
+  { key: NodeType.OBJECT, label: 'Object' },
+  { key: NodeType.ARRAY, label: 'Array' },
+  { key: NodeType.NULL, label: 'Null' },
 ];

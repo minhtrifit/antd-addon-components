@@ -1,4 +1,4 @@
-import { JsonValue } from './types';
+import { JsonValue, NodeType } from './types';
 
 export const clone = <T, __>(obj: T): T => structuredClone(obj);
 
@@ -12,24 +12,24 @@ export const getByPath = (obj: any, path: (string | number)[]) => {
   return current;
 };
 
-export const defaultValueByType = (type: string): JsonValue => {
+export const defaultValueByType = (type: NodeType): JsonValue => {
   switch (type) {
-    case 'string':
+    case NodeType.STRING:
       return '';
 
-    case 'number':
+    case NodeType.NUMBER:
       return 0;
 
-    case 'boolean':
+    case NodeType.BOOLEAN:
       return false;
 
-    case 'object':
+    case NodeType.OBJECT:
       return {};
 
-    case 'array':
+    case NodeType.ARRAY:
       return [];
 
-    case 'null':
+    case NodeType.NULL:
       return null;
 
     default:
