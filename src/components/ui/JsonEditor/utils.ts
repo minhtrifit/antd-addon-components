@@ -39,8 +39,8 @@ export const defaultValueByType = (type: NodeType): JsonValue => {
 
 export const isValidJson = (value: string): boolean => {
   try {
-    JSON.parse(value);
-    return true;
+    const parsed = JSON.parse(value);
+    return typeof parsed === 'object' && parsed !== null;
   } catch {
     return false;
   }

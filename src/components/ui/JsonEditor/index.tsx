@@ -52,10 +52,16 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
   const [openPreview, setOpenPreview] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
-  const memoValidJsonValue: boolean = useMemo(() => {
-    if (!value) return false;
-    return isValidJson(formatJsonValueToString(value));
-  }, [value]);
+  const isValidJsonValue: boolean = useMemo(() => {
+    const checkValidSourceValue = isValidJson(formatJsonValueToString(value));
+    const checkValidInternalEditorValue = isValidJson(internalEditorValue);
+
+    if (mode === ViewMode.NODE && checkValidSourceValue) return true;
+
+    if (!checkValidSourceValue || !checkValidInternalEditorValue) return false;
+
+    return true;
+  }, [mode, value, internalEditorValue]);
 
   const handleChangeViewMode = (sourceValue: JsonValue, modeValue: ViewMode) => {
     setMode(modeValue);
@@ -201,13 +207,13 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
         {enableDownload && (
           <Tooltip title={t('antd-json-editor.download')}>
             <Button
-              disabled={!memoValidJsonValue}
-              className={cn(`${!memoValidJsonValue && '!bg-zinc-200'}`)}
+              disabled={!isValidJsonValue}
+              className={cn(`${!isValidJsonValue && '!bg-zinc-200'}`)}
               onClick={() => handleDownloadFile(value)}
             >
               <IoMdDownload
                 size={20}
-                className={cn(`${!memoValidJsonValue ? 'text-zinc-400' : 'text-primary'}`)}
+                className={cn(`${!isValidJsonValue ? 'text-zinc-400' : 'text-primary'}`)}
               />
             </Button>
           </Tooltip>
