@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, InputNumber, Switch } from 'antd';
 import { JsonValue } from './types';
 import { KeyboardKey } from './constants';
@@ -98,4 +98,4 @@ const ValueEditor = ({ value, updateValue }: PropType) => {
   return <span className='px-2 py-2.5 caret-transparent text-orange-500 font-semibold'>null</span>;
 };
 
-export default memo(ValueEditor);
+export default ValueEditor;
