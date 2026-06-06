@@ -14,3 +14,8 @@ export type JsonValue =
   | null
   | JsonValue[]
   | { [key: string]: JsonValue };
+
+export interface EditorCodeThemeType {
+  theme: string;
+  background: string;
+}

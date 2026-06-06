@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.3.4",
+    "@monaco-editor/react": "^4.7.0",
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.26.4",
     "axios": "^1.10.0",

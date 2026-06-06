@@ -1,16 +1,18 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { forwardRef, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { Button, message, Popconfirm, Tooltip, Upload } from 'antd';
+import { Button, Divider, message, Popconfirm, Space, Tooltip, Upload } from 'antd';
 import { RcFile } from 'antd/es/upload';
-import { FaEye, FaTrash } from 'react-icons/fa';
+import { FaEye, FaTrash, FaCodeBranch, FaCode } from 'react-icons/fa';
 import { IoMdDownload } from 'react-icons/io';
 import { MdFileUpload } from 'react-icons/md';
 import { JsonValue } from './types';
+import { ViewMode } from './constants';
+import { downloadJsonFile, formatJsonValueToString, isValidJson, readJsonFile } from './utils';
 import { JsonNode } from './JsonNode';
 import PreviewModal from './PreviewModal';
-import { downloadJsonFile, isValidJson, readJsonFile } from './utils';
+import { JsonEditorCode } from './JsonEditorCode';
 
 interface PropType {
   containerClassName?: string;
@@ -22,6 +24,9 @@ interface PropType {
   enableDownload?: boolean;
   enableUpload?: boolean;
   enableClear?: boolean;
+  viewMode?: ViewMode;
+  height?: number;
+  nodeModeMaxHeight?: number;
 }
 
 export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
@@ -35,17 +40,34 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
     enableDownload = true,
     enableUpload = true,
     enableClear = true,
+    viewMode = ViewMode.NODE,
+    height = 400,
+    nodeModeMaxHeight,
   } = props;
 
   const { t } = useTranslation();
 
+  const [mode, setMode] = useState<ViewMode>(viewMode);
+  const [internalEditorValue, setInternalEditorValue] = useState<string>('');
   const [openPreview, setOpenPreview] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
   const memoValidJsonValue: boolean = useMemo(() => {
     if (!value) return false;
-    return isValidJson(JSON.stringify(value, null, 2));
+    return isValidJson(formatJsonValueToString(value));
   }, [value]);
+
+  const handleChangeViewMode = (sourceValue: JsonValue, modeValue: ViewMode) => {
+    setMode(modeValue);
+
+    if (modeValue === ViewMode.EDITOR) {
+      setInternalEditorValue(formatJsonValueToString(sourceValue));
+    }
+  };
+
+  const handleChangeEditorCode = (value: string) => {
+    setInternalEditorValue(value);
+  };
 
   const handlePreview = () => {
     setOpenPreview(true);
@@ -55,8 +77,16 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
     setOpenPreview(false);
   };
 
+  const handleDisableViewNodeMode = (mode: ViewMode, editorValue: string) => {
+    const checkValidJson = isValidJson(editorValue);
+
+    if (mode === ViewMode.EDITOR && !checkValidJson) return true;
+
+    return false;
+  };
+
   const handleDownloadFile = (data: JsonValue) => {
-    const stringData = JSON.stringify(data, null, 2);
+    const stringData = formatJsonValueToString(data);
 
     const checkValidJson = isValidJson(stringData);
 
@@ -91,14 +121,29 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
     onChange({});
   };
 
+  // Sync JSON value from EDITOR_CODE_MODE => NODE_MODE
+  useEffect(() => {
+    const handleSyncJsonValue = () => {
+      if (mode === ViewMode.NODE) return;
+
+      const checkValid = isValidJson(internalEditorValue);
+
+      if (!checkValid) return;
+
+      onChange(JSON.parse(internalEditorValue));
+    };
+
+    handleSyncJsonValue();
+  }, [mode, internalEditorValue]);
+
   return (
     <div
       ref={ref}
       tabIndex={0}
       className={cn(
         containerClassName,
-        error && 'border border-solid border-red-500',
-        'w-full rounded-sm bg-[#FFF] flex flex-col',
+        error ? 'border-red-500' : 'border-primary',
+        'w-full rounded-sm bg-[#FFF] flex flex-col border border-solid',
       )}
     >
       <PreviewModal jsonContent={value} open={openPreview} onClose={handleClosePreview} />
@@ -107,10 +152,44 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
       <section
         className={cn(
           toolBarClassName,
-          error ? 'bg-red-500' : 'bg-primary',
           'w-full p-2 text-[#FFF] rounded-t-sm flex flex-wrap items-center gap-2',
+          'border-b border-t-transparent border-x-transparent border-solid border-primary',
         )}
       >
+        <Space.Compact>
+          <Tooltip
+            title={
+              handleDisableViewNodeMode(mode, internalEditorValue)
+                ? t('antd-json-editor.node-view-mode-disable')
+                : undefined
+            }
+          >
+            <Button
+              icon={<FaCodeBranch />}
+              disabled={handleDisableViewNodeMode(mode, internalEditorValue)}
+              type={mode === ViewMode.NODE ? 'primary' : 'default'}
+              onClick={() => handleChangeViewMode(value, ViewMode.NODE)}
+            >
+              Node
+            </Button>
+          </Tooltip>
+          <Button
+            icon={<FaCode />}
+            type={mode === ViewMode.EDITOR ? 'primary' : 'default'}
+            onClick={() => handleChangeViewMode(value, ViewMode.EDITOR)}
+          >
+            Editor
+          </Button>
+        </Space.Compact>
+
+        <Divider
+          type='vertical'
+          style={{
+            height: 24,
+            borderColor: '#d9d9d9',
+          }}
+        />
+
         {enablePreview && (
           <Tooltip title={t('antd-json-editor.preview')}>
             <Button onClick={handlePreview}>
@@ -161,9 +240,27 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
         )}
       </section>
 
-      <section className='p-4'>
-        <JsonNode name='root' value={value} path={[]} root={value} onChange={onChange} isRoot />
-      </section>
+      {mode === ViewMode.NODE && (
+        <section
+          style={{
+            minHeight: height,
+          }}
+          className={cn(
+            'p-4',
+            `${nodeModeMaxHeight && `max-h-[${nodeModeMaxHeight}px] overflow-y-auto`}`,
+          )}
+        >
+          <JsonNode name='root' value={value} path={[]} root={value} onChange={onChange} isRoot />
+        </section>
+      )}
+
+      {mode === ViewMode.EDITOR && (
+        <JsonEditorCode
+          height={height}
+          value={internalEditorValue}
+          onChange={handleChangeEditorCode}
+        />
+      )}
 
       {error && <div className='p-2 text-sm text-red-500'>{error}</div>}
     </div>

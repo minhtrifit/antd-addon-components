@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { Modal } from 'antd';
 import { JsonValue } from './types';
+import { formatJsonValueToString } from './utils';
 
 interface PropType {
   jsonContent: JsonValue;
@@ -15,7 +16,7 @@ const PreviewModal = (props: PropType) => {
   return (
     <Modal open={open} footer={null} onCancel={onClose}>
       <div className={cn(className, `mt-8 max-h-[400px] overflow-y-auto`)}>
-        <pre>{JSON.stringify(jsonContent, null, 2)}</pre>
+        <pre>{formatJsonValueToString(jsonContent)}</pre>
       </div>
     </Modal>
   );

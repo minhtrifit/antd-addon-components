@@ -78,3 +78,7 @@ export const readJsonFile = async <T = any>(file: File): Promise<T> => {
     throw new Error('Invalid json');
   }
 };
+
+export const formatJsonValueToString = (value: JsonValue) => {
+  return JSON.stringify(value, null, 2);
+};

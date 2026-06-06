@@ -1,4 +1,4 @@
-import { NodeType } from './types';
+import { EditorCodeThemeType, NodeType } from './types';
 
 export const TYPE_MENU_ITEMS = [
   { key: NodeType.STRING, label: 'String' },
@@ -8,3 +8,20 @@ export const TYPE_MENU_ITEMS = [
   { key: NodeType.ARRAY, label: 'Array' },
   { key: NodeType.NULL, label: 'Null' },
 ];
+
+export enum ViewMode {
+  NODE = 'NODE',
+  EDITOR = 'EDITOR',
+}
+
+export const EditorCodeTheme: Record<string, EditorCodeThemeType> = {
+  light: {
+    theme: 'vs',
+    background: '#FFFFFF',
+  },
+
+  dark: {
+    theme: 'vs-dark',
+    background: '#141414',
+  },
+};

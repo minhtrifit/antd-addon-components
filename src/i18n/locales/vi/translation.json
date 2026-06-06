@@ -36,6 +36,7 @@
     "invalid-json": "Json không hợp lệ",
     "download-successfully": "Tải xuống thành công",
     "clear-all": "Xóa toàn bộ",
-    "confirm-delete-all-node": "Bạn có chắc muốn xóa toàn bộ dữ liệu?"
+    "confirm-delete-all-node": "Bạn có chắc muốn xóa toàn bộ dữ liệu?",
+    "node-view-mode-disable": "Chế độ này không khả dụng do không đúng kiểu dữ liệu json"
   }
 }

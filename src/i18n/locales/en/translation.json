@@ -36,6 +36,7 @@
     "invalid-json": "Invalid json",
     "download-successfully": "Download successfully",
     "clear-all": "Clear all",
-    "confirm-delete-all-node": "Are you sure to delete all node?"
+    "confirm-delete-all-node": "Are you sure to delete all node?",
+    "node-view-mode-disable": "This mode is not available as invalid json value"
   }
 }
