@@ -63,11 +63,17 @@ const ValueEditor = ({ value, updateValue }: PropType) => {
     if (!isEdit)
       return (
         <span
-          className='px-2 py-2.5 caret-transparent hover:cursor-pointer'
+          className='relative group px-4 py-2.5 caret-transparent
+                      hover:cursor-pointer hover:bg-zinc-100 rounded-sm'
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => setIsEdit(true)}
         >
           {value}
+          <MdModeEditOutline
+            size={20}
+            className='absolute top-[-8px] right-[-8px] text-primary opacity-0
+                        transition-opacity duration-200 group-hover:opacity-100'
+          />
         </span>
       );
 

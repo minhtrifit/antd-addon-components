@@ -37,6 +37,7 @@
     "download-successfully": "Tải xuống thành công",
     "clear-all": "Xóa toàn bộ",
     "confirm-delete-all-node": "Bạn có chắc muốn xóa toàn bộ dữ liệu?",
-    "node-view-mode-disable": "Chế độ này không khả dụng do không đúng kiểu dữ liệu json"
+    "node-view-mode-disable": "Chế độ này không khả dụng do không đúng kiểu dữ liệu json",
+    "name-key-not-found": "Không tìm thấy tên khóa"
   }
 }

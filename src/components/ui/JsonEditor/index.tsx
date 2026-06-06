@@ -51,6 +51,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
   const [internalEditorValue, setInternalEditorValue] = useState<string>('');
   const [openPreview, setOpenPreview] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+  const [focusPath, setFocusPath] = useState<string>('');
 
   const isValidJsonValue: boolean = useMemo(() => {
     const checkValidSourceValue = isValidJson(formatJsonValueToString(value));
@@ -127,6 +128,25 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
   const handleDeleteAllNode = () => {
     onChange({});
     setInternalEditorValue('{}');
+  };
+
+  const handleUpdateFocusPath = (
+    isArray: boolean,
+    target: Record<string, any>,
+    currentPath: (string | number)[],
+    newKey?: string,
+  ) => {
+    if (isArray) {
+      setFocusPath([...currentPath, String(target.length - 1)].join('.'));
+      return;
+    }
+
+    if (!isArray && !newKey) {
+      message.error(t('antd-json-editor.name-key-not-found'));
+      return;
+    }
+
+    setFocusPath([...currentPath, newKey].join('.'));
   };
 
   // Sync JSON value from EDITOR_CODE_MODE => NODE_MODE
@@ -259,7 +279,16 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
             `${nodeModeMaxHeight && `max-h-[${nodeModeMaxHeight}px] overflow-y-auto`}`,
           )}
         >
-          <JsonNode name='root' value={value} path={[]} root={value} onChange={onChange} isRoot />
+          <JsonNode
+            name='root'
+            value={value}
+            path={[]}
+            root={value}
+            onChange={onChange}
+            isRoot
+            focusPath={focusPath}
+            handleUpdateFocusPath={handleUpdateFocusPath}
+          />
         </section>
       )}
 

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { Button, Dropdown, Input, Popconfirm } from 'antd';
+import { Button, Dropdown, Input, InputRef, Popconfirm } from 'antd';
 import { FaPlus, FaChevronRight, FaChevronDown } from 'react-icons/fa';
 import { MdModeEditOutline, MdSwapHoriz } from 'react-icons/md';
 import { VscCircleSlash } from 'react-icons/vsc';
@@ -17,6 +17,13 @@ interface PropType {
   root: JsonValue;
   onChange: (value: JsonValue) => void;
   isRoot?: boolean;
+  focusPath: string;
+  handleUpdateFocusPath: (
+    isArray: boolean,
+    target: Record<string, any>,
+    currentPath: (string | number)[],
+    newKey?: string,
+  ) => void;
 }
 
 const Branch = () => {
@@ -32,9 +39,11 @@ const Branch = () => {
 };
 
 export const JsonNode = (props: PropType) => {
-  const { name, value, path, root, onChange, isRoot } = props;
+  const { name, value, path, root, onChange, isRoot, focusPath, handleUpdateFocusPath } = props;
 
   const { t } = useTranslation();
+
+  const keyInputRef = useRef<InputRef>(null);
 
   const [expanded, setExpanded] = useState<boolean>(true);
   const [editingKey, setEditingKey] = useState<boolean>(false);
@@ -117,30 +126,41 @@ export const JsonNode = (props: PropType) => {
     updateRoot((draft) => {
       const target = isRoot ? draft : getByPath(draft, currentPath);
 
-      if (typeof target !== 'object' || target === null) {
-        return;
-      }
+      if (typeof target !== 'object' || target === null) return;
 
       if (Array.isArray(target)) {
         target.push(defaultValueByType(type));
-        setExpanded(true); // Auto expanded child node
+        handleUpdateFocusPath(true, target, currentPath);
+        setExpanded(true);
         return;
       }
 
       let index = 1;
+      while (target[`newKey${index}`] !== undefined) index++;
 
-      while (target[`newKey${index}`] !== undefined) {
-        index++;
-      }
+      const newKey = `newKey${index}`;
+      target[newKey] = defaultValueByType(type);
 
-      target[`newKey${index}`] = defaultValueByType(type);
-      setExpanded(true); // Auto expanded child node
+      handleUpdateFocusPath(false, target, currentPath, newKey);
+      setExpanded(true);
     });
   };
 
   const isObject = value !== null && typeof value === 'object';
 
   const isArray = Array.isArray(value);
+
+  // Trigger auto focus new element
+  useEffect(() => {
+    if (focusPath !== currentPath.join('.')) return;
+
+    setExpanded(true);
+    setEditingKey(true);
+
+    setTimeout(() => {
+      keyInputRef.current?.focus();
+    }, 0);
+  }, [focusPath]);
 
   return (
     <div className={cn(`${isRoot ? 'ml-0' : 'ml-[24px]'}`)}>
@@ -158,6 +178,7 @@ export const JsonNode = (props: PropType) => {
         {!isRoot &&
           (editingKey ? (
             <Input
+              ref={keyInputRef}
               autoFocus
               value={draftKey}
               style={{
@@ -245,6 +266,8 @@ export const JsonNode = (props: PropType) => {
                   path={currentPath}
                   root={root}
                   onChange={onChange}
+                  focusPath={focusPath}
+                  handleUpdateFocusPath={handleUpdateFocusPath}
                 />
               ))
             : Object.entries(value).map(([key, val]) => (
@@ -255,6 +278,8 @@ export const JsonNode = (props: PropType) => {
                   path={currentPath}
                   root={root}
                   onChange={onChange}
+                  focusPath={focusPath}
+                  handleUpdateFocusPath={handleUpdateFocusPath}
                 />
               ))}
         </div>

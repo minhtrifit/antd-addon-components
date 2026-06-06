@@ -37,6 +37,7 @@
     "download-successfully": "Download successfully",
     "clear-all": "Clear all",
     "confirm-delete-all-node": "Are you sure to delete all node?",
-    "node-view-mode-disable": "This mode is not available as invalid json value"
+    "node-view-mode-disable": "This mode is not available as invalid json value",
+    "name-key-not-found": "Name key not found"
   }
 }
