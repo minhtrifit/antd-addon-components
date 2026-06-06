@@ -25,6 +25,7 @@
   "start-date": "Start date",
   "end-date": "End date",
   "app-not-support-device": "Application is not supported on this device",
+  "view": "View",
   "antd-json-editor": {
     "preview": "Preview",
     "confirm": "Confirm",
