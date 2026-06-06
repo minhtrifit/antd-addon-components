@@ -144,7 +144,7 @@ export const JsonNode = (props: PropType) => {
 
   return (
     <div className={cn(`${isRoot ? 'ml-0' : 'ml-[24px]'}`)}>
-      <div className={cn(`${!isRoot && 'my-3'}`, 'flex items-center gap-3')}>
+      <div className={cn(`${!isRoot && 'my-3'}`, 'flex items-center gap-2')}>
         {isObject ? (
           <Button
             type='text'
@@ -177,10 +177,10 @@ export const JsonNode = (props: PropType) => {
             <span
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => setEditingKey(true)}
-              className='group relative px-2 py-2.5 cursor-pointer min-w-[100px] inline-block
-                        hover:bg-zinc-100 rounded-sm caret-transparent'
+              className='group relative px-4 py-2.5 cursor-pointer min-w-[100px] inline-block
+                        hover:bg-zinc-100 rounded-sm caret-transparent font-[600]'
             >
-              &quot;{name}&quot;
+              {name}:
               <MdModeEditOutline
                 size={20}
                 className='absolute top-[-8px] right-[-8px] text-primary opacity-0
@@ -205,7 +205,7 @@ export const JsonNode = (props: PropType) => {
             }}
             trigger={['click']}
           >
-            <Button icon={<MdSwapHoriz size={20} />} />
+            <Button type='text' icon={<MdSwapHoriz size={20} />} />
           </Dropdown>
         )}
 
@@ -217,7 +217,7 @@ export const JsonNode = (props: PropType) => {
             }}
             trigger={['click']}
           >
-            <Button icon={<FaPlus />} />
+            <Button type='dashed' icon={<FaPlus />} />
           </Dropdown>
         )}
 
@@ -229,7 +229,7 @@ export const JsonNode = (props: PropType) => {
             okText={t('antd-json-editor.confirm')}
             cancelText={t('antd-json-editor.cancel')}
           >
-            <Button danger icon={<VscCircleSlash size={20} />} />
+            <Button type='text' danger icon={<VscCircleSlash size={20} />} />
           </Popconfirm>
         )}
       </div>

@@ -21,7 +21,7 @@ export const defaultValueByType = (type: NodeType): JsonValue => {
       return 0;
 
     case NodeType.BOOLEAN:
-      return false;
+      return true;
 
     case NodeType.OBJECT:
       return {};

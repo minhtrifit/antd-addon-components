@@ -200,7 +200,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
 
         {enablePreview && (
           <Tooltip title={t('antd-json-editor.preview')}>
-            <Button onClick={handlePreview}>
+            <Button type='text' onClick={handlePreview}>
               <FaEye size={20} className='text-primary' />
             </Button>
           </Tooltip>
@@ -209,6 +209,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
         {enableDownload && (
           <Tooltip title={t('antd-json-editor.download')}>
             <Button
+              type='text'
               disabled={!isValidJsonValue}
               className={cn(`${!isValidJsonValue && '!bg-zinc-200'}`)}
               onClick={() => handleDownloadFile(value)}
@@ -224,7 +225,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
         {enableUpload && (
           <Tooltip title={t('antd-json-editor.upload')}>
             <Upload accept='.json' showUploadList={false} beforeUpload={handleUploadFile}>
-              <Button loading={uploadLoading}>
+              <Button type='text' loading={uploadLoading}>
                 <MdFileUpload size={20} className='text-primary' />
               </Button>
             </Upload>
@@ -240,7 +241,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
               okText={t('antd-json-editor.confirm')}
               cancelText={t('antd-json-editor.cancel')}
             >
-              <Button danger>
+              <Button type='text' danger>
                 <FaTrash size={20} />
               </Button>
             </Popconfirm>
