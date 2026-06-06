@@ -14,6 +14,10 @@ export enum ViewMode {
   EDITOR = 'EDITOR',
 }
 
+export enum KeyboardKey {
+  ENTER = 'Enter',
+}
+
 export const EditorCodeTheme: Record<string, EditorCodeThemeType> = {
   light: {
     theme: 'vs',

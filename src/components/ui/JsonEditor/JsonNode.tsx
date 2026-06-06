@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { Button, Dropdown, Input, InputNumber, Popconfirm, Switch } from 'antd';
+import { Button, Dropdown, Input, Popconfirm } from 'antd';
 import { FaPlus, FaChevronRight, FaChevronDown } from 'react-icons/fa';
 import { MdModeEditOutline, MdSwapHoriz } from 'react-icons/md';
 import { VscCircleSlash } from 'react-icons/vsc';
 import { JsonValue, NodeType } from './types';
 import { clone, defaultValueByType, getByPath } from './utils';
 import { TYPE_MENU_ITEMS } from './constants';
+import ValueEditor from './ValueEditor';
 
 interface PropType {
   name: string;
@@ -137,30 +138,6 @@ export const JsonNode = (props: PropType) => {
     });
   };
 
-  const renderValueEditor = (value: JsonValue) => {
-    if (value !== null && typeof value === 'object') {
-      return null;
-    }
-
-    if (typeof value === 'string') {
-      return (
-        <Input value={value} style={{ width: 180 }} onChange={(e) => updateValue(e.target.value)} />
-      );
-    }
-
-    if (typeof value === 'number') {
-      return <InputNumber value={value} onChange={(v) => updateValue(v ?? 0)} />;
-    }
-
-    if (typeof value === 'boolean') {
-      return <Switch checked={value} onChange={(checked) => updateValue(checked)} />;
-    }
-
-    return (
-      <span className='px-2 py-2.5 caret-transparent text-orange-500 font-semibold'>null</span>
-    );
-  };
-
   const isObject = value !== null && typeof value === 'object';
 
   const isArray = Array.isArray(value);
@@ -217,7 +194,7 @@ export const JsonNode = (props: PropType) => {
             {isArray ? `[${value.length}]` : '{}'}
           </span>
         ) : (
-          renderValueEditor(value)
+          <ValueEditor value={value} updateValue={updateValue} />
         )}
 
         {!isRoot && (
