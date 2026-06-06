@@ -113,6 +113,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       onChange(data);
+      setInternalEditorValue(formatJsonValueToString(data));
       message.success(t('antd-json-editor.upload-successfully'));
     } catch {
       message.error(t('antd-json-editor.invalid-json'));
@@ -125,6 +126,7 @@ export const JsonEditor = forwardRef<HTMLDivElement, PropType>((props, ref) => {
 
   const handleDeleteAllNode = () => {
     onChange({});
+    setInternalEditorValue('{}');
   };
 
   // Sync JSON value from EDITOR_CODE_MODE => NODE_MODE

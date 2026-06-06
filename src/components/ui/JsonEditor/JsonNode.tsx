@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { Button, Dropdown, Input, InputNumber, Popconfirm, Switch } from 'antd';
-import { FaPlus, FaChevronRight, FaChevronDown, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaChevronRight, FaChevronDown } from 'react-icons/fa';
 import { MdModeEditOutline, MdSwapHoriz } from 'react-icons/md';
+import { VscCircleSlash } from 'react-icons/vsc';
 import { JsonValue, NodeType } from './types';
 import { clone, defaultValueByType, getByPath } from './utils';
 import { TYPE_MENU_ITEMS } from './constants';
@@ -240,7 +241,7 @@ export const JsonNode = (props: PropType) => {
             okText={t('antd-json-editor.confirm')}
             cancelText={t('antd-json-editor.cancel')}
           >
-            <Button danger icon={<FaTrash />} />
+            <Button danger icon={<VscCircleSlash size={20} />} />
           </Popconfirm>
         )}
       </div>
