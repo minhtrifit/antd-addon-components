@@ -55,12 +55,23 @@ export const JsonNode = (props: PropType) => {
     updateRoot((draft) => {
       const parent = getByPath(draft, path);
 
-      if (Array.isArray(parent) || parent[newKey] !== undefined) {
-        return;
+      if (Array.isArray(parent) || parent[newKey] !== undefined) return;
+
+      const entries = Object.entries(parent);
+
+      const nextObj: any = {};
+
+      for (const [key, value] of entries) {
+        if (key === oldKey) {
+          nextObj[newKey] = value;
+        } else {
+          nextObj[key] = value;
+        }
       }
 
-      parent[newKey] = parent[oldKey];
-      delete parent[oldKey];
+      // Mutate parent but keep reference structure
+      Object.keys(parent).forEach((k) => delete parent[k]);
+      Object.assign(parent, nextObj);
     });
   };
 
