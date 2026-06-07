@@ -25,7 +25,7 @@ const ValueEditor = ({ value, updateValue }: PropType) => {
     if (!isEdit)
       return (
         <span
-          className='relative group px-4 py-2.5 caret-transparent
+          className='relative group p-2.5 caret-transparent
                       hover:cursor-pointer hover:bg-zinc-100 rounded-sm'
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => setIsEdit(true)}
@@ -63,7 +63,7 @@ const ValueEditor = ({ value, updateValue }: PropType) => {
     if (!isEdit)
       return (
         <span
-          className='relative group px-4 py-2.5 caret-transparent
+          className='relative group p-2.5 caret-transparent
                       hover:cursor-pointer hover:bg-zinc-100 rounded-sm'
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => setIsEdit(true)}

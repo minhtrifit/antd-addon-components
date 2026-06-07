@@ -9,6 +9,12 @@ import { JsonValue, NodeType } from './types';
 import { clone, defaultValueByType, getByPath } from './utils';
 import { TYPE_MENU_ITEMS } from './constants';
 import ValueEditor from './ValueEditor';
+import {
+  LeftCurlyBrace,
+  LeftSquareBracket,
+  RightCurlyBrace,
+  RightSquareBracket,
+} from './CustomSvg';
 
 interface PropType {
   name: string;
@@ -26,16 +32,8 @@ interface PropType {
   ) => void;
 }
 
-const Branch = () => {
-  return (
-    <div
-      onMouseDown={(e) => e.preventDefault()}
-      className='relative w-[40px] h-[30px] caret-transparent'
-    >
-      <div className='absolute top-0 left-3 w-[1px] h-[50%] bg-zinc-500' />
-      <div className='absolute top-1/2 left-3 w-[50%] h-[1px] bg-zinc-500' />
-    </div>
-  );
+const TempBlock = () => {
+  return <div className='opacity-0 w-[25px] h-[30px] caret-transparent'>block</div>;
 };
 
 export const JsonNode = (props: PropType) => {
@@ -166,13 +164,15 @@ export const JsonNode = (props: PropType) => {
     <div className={cn(`${isRoot ? 'ml-0' : 'ml-[24px]'}`)}>
       <div className={cn(`${!isRoot && 'my-3'}`, 'flex items-center gap-2')}>
         {isObject ? (
-          <Button
-            type='text'
-            icon={expanded ? <FaChevronDown /> : <FaChevronRight />}
+          <button
+            type='button'
+            className='flex items-center justify-center border-none bg-transparent hover:cursor-pointer'
             onClick={() => setExpanded(!expanded)}
-          />
+          >
+            {expanded ? <FaChevronDown /> : <FaChevronRight />}
+          </button>
         ) : (
-          <Branch />
+          <TempBlock />
         )}
 
         {!isRoot &&
@@ -198,7 +198,7 @@ export const JsonNode = (props: PropType) => {
             <span
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => setEditingKey(true)}
-              className='group relative px-4 py-2.5 cursor-pointer min-w-[100px] inline-block
+              className='group relative p-2.5 cursor-pointer inline-block
                         hover:bg-zinc-100 rounded-sm caret-transparent font-[600]'
             >
               {name}:
@@ -210,13 +210,19 @@ export const JsonNode = (props: PropType) => {
             </span>
           ))}
 
-        {isObject ? (
+        {!expanded && isObject && (
           <span className='min-w-[20px] text-center text-primary font-semibold'>
-            {isArray ? `[${value.length}]` : '{}'}
+            {isArray ? `[${value.length}]` : `{${Object.keys(value).length}}`}
           </span>
-        ) : (
-          <ValueEditor value={value} updateValue={updateValue} />
         )}
+
+        {expanded && isObject && (
+          <span className='min-w-[20px] text-center text-primary font-bold'>
+            {isArray ? <LeftSquareBracket /> : <LeftCurlyBrace />}
+          </span>
+        )}
+
+        <ValueEditor value={value} updateValue={updateValue} />
 
         {!isRoot && (
           <Dropdown
@@ -283,6 +289,12 @@ export const JsonNode = (props: PropType) => {
                 />
               ))}
         </div>
+      )}
+
+      {expanded && isObject && (
+        <span className='ml-[20px] min-w-[20px] text-center text-primary font-bold'>
+          {isArray ? <RightSquareBracket /> : <RightCurlyBrace />}
+        </span>
       )}
     </div>
   );
